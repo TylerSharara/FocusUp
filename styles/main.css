@@ -1,8 +1,9 @@
 :root {
 
     /*Fonts Types -------------------------------------------*/
-    --mainFont: 'Playfair Display', serif;
-    --subFont: 'Raleway', sans-serif;
+    --mainFont: 'Raleway', sans-serif;
+    --subFont:  'Merriweather', serif;
+    --handwriting: 'Caveat', cursive;
 
     /*Color Pallet -------------------------------------------*/
     --platinum: #e5e6e4;
@@ -49,7 +50,7 @@ body {
     color: white!important;
     margin: 5px;
     font-size: 18px;
-    font-family: var(--subFont);
+    font-family: var(--mainFont);
 }
 
 .nav-link:hover {
@@ -75,6 +76,27 @@ body {
     background-color: var(--platinum);
 }
 
+.hero-header {
+    font-family: var(--handwriting);
+    font-size: 8rem;
+    position: absolute;
+    width: 75%;
+    top: 15%;
+    left: 10%;
+}
+
+.hero-para {
+    font-family: var(--subFont);
+    color: var(--midnight);
+    font-size: 1.3rem;
+    position: absolute;
+    top: 33%;
+    left: 10%;
+    width: 55%;
+    margin: auto;
+    text-align: left;
+}
+
 #blob-one {
     position: absolute;
     top: 0;
@@ -95,9 +117,11 @@ body {
     align-items: center;
 }
 
-.wave-container {
-    position: relative;
-    height: 10vh;
+#to-do {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 998;
 }
 
 #waves-one {
@@ -140,6 +164,11 @@ body {
      height: 70%;
  }
 
+.contact-header {
+    font-family: var(--mainFont);
+    font-size: 3rem;
+}
+
 .contact-message {
     width: 100%;
     border-radius: 3px;
@@ -179,7 +208,7 @@ body {
     text-align: center;
     text-decoration: none;
     font-size: 18px;
-    font-family: var(--subFont);
+    font-family: var(--mainFont);
     padding: 0 25px;
     align-self: center;
 }
@@ -228,7 +257,8 @@ body {
     margin: auto;
     text-align: center;
     color: var(--midnight);
-    font-family: var(--subFont);
+    font-size: 3rem;
+    font-family: var(--mainFont);
     font-weight: 700;
 }
 
@@ -272,7 +302,7 @@ body {
         color: white!important;
         line-height: 40px;
         font-size: 18px;
-        font-family: var(--subFont);
+        font-family: var(--mainFont);
         width: 80%;
         margin: auto;
         text-align: center;
@@ -280,6 +310,19 @@ body {
 
     .navbar-nav {
         width: 100%;
+    }
+
+    #to-do {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        z-index: 998;
+        max-width: 120%;
+        max-height: 50%;
+        transform: translateX(8%);
+    }
+    .hero-para {
+        width: 85%;
     }
 
 }
@@ -300,7 +343,7 @@ body {
     .nav-link {
         color: var(--platinum);
         font-size: 18px;
-        font-family: var(--subFont);
+        font-family: var(--mainFont);
         width: 80%;
         margin: auto;
         text-align: center;
@@ -308,6 +351,18 @@ body {
 
     .navbar-nav {
         width: 100%;
+    }
+
+    .hero-header {
+        font-size: 5rem;
+        width: 75%;
+        top: 15%;
+        left: 10%;
+    }
+
+    .hero-para {
+        font-size: 1.10rem;
+        top: 30%;
     }
 
 }
