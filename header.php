@@ -21,8 +21,6 @@
     <link rel="stylesheet" type="text/css" href="styles/main.css">
 </head>
 
-
-
 <body>
 
 <div class="menu-bar">
@@ -35,12 +33,12 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a href="index.php" class="nav-link">Home</a>
+                        <a href="index.php?page=home" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">Things</a>
                     </li>
-                    <a href="login.php" class="login-menu-button">Login</a>
+                    <a href="index.php?page=login" class="login-menu-button">Login</a>
                 </ul>
             </div>
         </div>
