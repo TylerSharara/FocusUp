@@ -4,7 +4,7 @@
     //  version 1.0
     //  I dont know what this is gonna be yet
 
-
+    session_start();
     include_once('header.php');
     require_once('includes/handlers.inc.php');
 

@@ -361,10 +361,14 @@ footer {
         height: 50%;
         background-color: var(--quick-silver);
         position: absolute;
-        top: 25%;
+        top: 30%;
         left: 12.5%;
         z-index: 998;
         border-radius: 10px;
+    }
+
+    .form-alert {
+        transform: translateY(-75%);
     }
 
     .login-header {

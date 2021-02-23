@@ -1,5 +1,7 @@
 <?php
 
+    require_once 'dbh.inc.php';
+
     //Cleaning user input
     function test_input($data) {
         $data = trim($data);
@@ -10,8 +12,6 @@
 
     //SignUp handler
     if (isset($_POST['action']) && $_POST['action'] == 'signup') {
-
-        require_once 'dbh.inc.php';
 
         $name = test_input($_POST['name']);
         $email = test_input($_POST['email']);
@@ -32,7 +32,7 @@
             $errMsg = "Please enter a valid email.";
         }
 
-        //checking for errors in pass
+        //checking that passwords are equal and not empty
         if ($pass !== $pass2 || empty($pass)) {
             $safe = false;
             $errMsg = "Invalid Password, Your passwords must match.";
@@ -44,19 +44,12 @@
             $errMsg = "Invalid Password, Your password must meet our criteria.";
         }
 
-        //$stmt = $pdo->prepare('SELECT * FROM `Cart` WHERE Customer_id = ?;');
-        //$stmt->execute($id);
-        //looping through users cart
-        // while($cart = $stmt->fetch()){
-
         $stmt = $pdo->prepare('SELECT * FROM `users` WHERE userEmail = ?;');
-        $stmt->execute($email);
-        //looping through users cart
+        $stmt->execute([$email]);
         $checkUserExists = $stmt->fetch();
-        var_dump($checkUserExists[1]['userEmail']);
         if(isset($checkUserExists['userEmail'])){
             $safe = false;
-            $errMsg = "An account with this email is already registered.";
+            $errMsg = "An account with the email " . $checkUserExists['userEmail'] . " is already registered.";
         }
 
         //if safe - hash pass and insert data.
@@ -75,23 +68,28 @@
     //Login handler
     if (isset($_POST['action']) && $_POST['action'] == 'login') {
 
-        $username = $_POST["email"];
-        $pass = $_POST["pass"];
+        //testing input and hashing password
+        $username = test_input($_POST["email"]);
+        $pass = test_input($_POST["pass"]);
         $hash = crypt($pass, "pepper");
         $errMsg = "Something went wrong";
 
-        // Problem with SELECT queries
-        $stmt = $pdo->prepare('SELECT * FROM `users` WHERE userName = ? AND userPass = ?;');
+        //Check if user exists
+        $stmt = $pdo->prepare('SELECT * FROM `users` WHERE userEmail = ? AND userPass = ?;');
         $stmt->execute([$username, $hash]);
         $_SESSION['user'] = $stmt->fetch();
-        var_dump($_SESSION['user']['userName']);
-        //
 
+        //If user exists login in other wise serve error
         if(!empty($_SESSION['user']['userName'])) {
             echo '<div class="alert alert-success form-alert" role="alert">Login Successful!</div>';
             //header('Location: index.php?page=home');
         }
+        else if(empty($_SESSION['user']['userName']))  {
+            $errMsg = "The username and password combination does not exist.";
+            echo ' <div class="alert alert-danger form-alert" role="alert">'. $errMsg .'</div>';
+        }
         else {
+            $errMsg = "An unexpected error occured. Please try again later.";
             echo ' <div class="alert alert-danger form-alert" role="alert">'. $errMsg .'</div>';
         }
 
@@ -100,6 +98,7 @@
     //Contact handler
     if (isset($_POST['action']) && $_POST['action'] == 'contact') {
 
+        //testing input and setting up mailto() data
         $firstName = test_input($_POST['firstname']);
         $lastName = test_input($_POST['lastname']);
         $email = test_input($_POST['email']);
@@ -107,6 +106,7 @@
         $subject = $firstName . " " . $lastName;
         $mailto = "contact@tylersharara.com";
 
+        //checking user inputs for validity
         if(empty($firstName) || !is_string($firstName)){
             $safe = false;
             $errMsg = "Please enter a valid first name.";
@@ -124,6 +124,7 @@
             $errMsg = "Please enter a valid email.";
         }
 
+        //if no errors found call mail() and redirect to homepage with get parameters
         if($safe === true) {
             mail($mailto, $subject, $message);
             header("Location: index.php?mailsent");
