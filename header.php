@@ -36,9 +36,19 @@
                         <a href="index.php?page=home" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Things</a>
+                        <a href="index.php?page=task" class="nav-link">Tasks</a>
                     </li>
-                    <a href="index.php?page=login" class="login-menu-button">Login</a>
+                    <?php
+                        if (isset($_SESSION['user']['userName'])) {
+                            echo '<form class="logout-form" method="POST" action="">
+                                       <input type="hidden" name="action" value="logout">
+                                       <input type="submit" class="login-menu-button" value="Logout">
+                                  </form>';
+                        }
+                        else {
+                            echo '<a href="index.php?page=login" class="login-menu-button">Login</a>';
+                        }
+                    ?>
                 </ul>
             </div>
         </div>

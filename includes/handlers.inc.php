@@ -62,7 +62,6 @@
         } else {
             echo ' <div class="alert alert-danger form-alert" role="alert">'. $errMsg .'</div>';
         }
-
     }
 
     //Login handler
@@ -82,7 +81,7 @@
         //If user exists login in other wise serve error
         if(!empty($_SESSION['user']['userName'])) {
             echo '<div class="alert alert-success form-alert" role="alert">Login Successful!</div>';
-            //header('Location: index.php?page=home');
+            header('Location: index.php?page=home');
         }
         else if(empty($_SESSION['user']['userName']))  {
             $errMsg = "The username and password combination does not exist.";
@@ -92,6 +91,14 @@
             $errMsg = "An unexpected error occured. Please try again later.";
             echo ' <div class="alert alert-danger form-alert" role="alert">'. $errMsg .'</div>';
         }
+    }
+
+    //Logout handler
+    if (isset($_POST['action']) && $_POST['action'] == 'logout') {
+
+        var_dump("hello");
+        session_destroy();
+        header('Location: index.php?page=home');
 
     }
 
@@ -129,5 +136,63 @@
             mail($mailto, $subject, $message);
             header("Location: index.php?mailsent");
         }
+    }
+
+    //Add list entry handler
+    if (isset($_POST['action']) && $_POST['action'] == 'addTask') {
+
+        //Getting user inputs for task
+        $taskName = test_input($_POST['taskName']);
+        $taskDesc = test_input($_POST['taskDesc']);
+        $safe = true;
+
+        //Checking user inputs for validity
+        if(empty($taskName) || !is_string($taskName)){
+            $safe = false;
+            $errMsg = "Please enter a valid task name.";
+        }
+        if(!is_string($taskDesc)){
+            $safe = false;
+            $errMsg = "Please enter a valid task description.";
+        }
+
+        if($safe){
+
+            //getting datetime beacuse NOW() wont work in the insert for some reason
+            $stmt = $pdo->prepare('SELECT NOW();');
+            $stmt->execute();
+            $date = $stmt->fetch();
+
+            //inserting task is all looks good
+            $sql = "INSERT INTO `tasks` (`taskName`, `taskDesc`, `taskDate`, `userID`) VALUES (?, ?, ?, ?)";
+            $stmt = $pdo->prepare($sql);
+            if ($stmt->execute([$taskName, $taskDesc, $date['NOW()'], $_SESSION['user']['userID']])) {
+                header('Location: index.php?page=task&added=success');
+                echo '<div class="alert alert-success form-alert" role="alert">Task added!</div>';
+            } else {
+                header('Location: index.php?page=task&added=error');
+                echo ' <div class="alert alert-danger form-alert" role="alert">Oh no! We encountered and unexpected error</div>';
+            }
+        }
+        else {
+            echo ' <div class="alert alert-danger form-alert" role="alert">' . $errMsg . '</div>';
+        }
+
+    }
+
+    //Add list entry handler
+    if (isset($_GET['page']) && $_GET['page'] == 'task') {
+
+        $stmt = $pdo->prepare('SELECT * FROM `tasks` WHERE userID = ?;');
+        $stmt->execute([$_SESSION['user']['userID']]);
+        $_SESSION['tasks'] = $stmt->fetch();
+
+        /*
+        while($tasks = $stmt->fetch()){
+            echo '<div class="task">
+                        <h3 class="task-header">' . $tasks[$taskName] . '</h3>
+                  </div>';
+        }
+        */
 
     }

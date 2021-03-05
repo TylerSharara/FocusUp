@@ -17,6 +17,9 @@
     else if (isset($_GET['page']) && $_GET['page'] == 'signup') {
         include('signup.php');
     }
+    else if (isset($_GET['page']) && $_GET['page'] == 'task') {
+        include('tasks.php');
+    }
     else {
         include('home.php');
     }
