@@ -298,7 +298,7 @@ body {
     z-index: 997;
 }
 
-.add-task-container{
+.add-task-container {
     width: 60%;
     height: 25%;
     background-color: var(--quick-silver);
@@ -307,6 +307,47 @@ body {
     left: 20%;
     z-index: 998;
     border-radius: 10px;
+}
+
+.task-container {
+    position: absolute;
+    top: 81%;
+    width: 100%;
+    z-index: 999;
+    margin: auto;
+    background: var(--midnight);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.task {
+    width: 90%;
+    margin: 10px auto;
+    background-color: var(--platinum);
+    border-radius: 10px;
+    position: relative;
+}
+
+.task-button {
+    width: 100%;
+    height: 40px;
+    border-radius: 3px;
+    background-color: var(--red-crayola);
+    border: 2px solid #ff1053;
+    color: var(--midnight);
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+}
+
+.task-button:hover {
+    background-color: transparent;
+    color: var(--midnight);
 }
 
 footer {
@@ -434,6 +475,18 @@ footer {
     .hero-para {
         font-size: 1.10rem;
         top: 33%;
+    }
+
+    .task-button {
+        width: 30px;
+        height: 30px;
+        line-height: 15px;
+        border-radius: 50%;
+        background-color: var(--red-crayola);
+        border: 2px solid var(--red-crayola);
+        position: absolute;
+        top: 1%;
+        right: 1.5%;
     }
 
 }

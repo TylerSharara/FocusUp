@@ -158,7 +158,7 @@
 
         if($safe){
 
-            //getting datetime beacuse NOW() wont work in the insert for some reason
+            //getting datetime because NOW() wont work in the insert for some reason
             $stmt = $pdo->prepare('SELECT NOW();');
             $stmt->execute();
             $date = $stmt->fetch();
@@ -180,19 +180,52 @@
 
     }
 
-    //Add list entry handler
+    //Display tasks handler
     if (isset($_GET['page']) && $_GET['page'] == 'task') {
 
         $stmt = $pdo->prepare('SELECT * FROM `tasks` WHERE userID = ?;');
         $stmt->execute([$_SESSION['user']['userID']]);
-        $_SESSION['tasks'] = $stmt->fetch();
 
-        /*
-        while($tasks = $stmt->fetch()){
-            echo '<div class="task">
-                        <h3 class="task-header">' . $tasks[$taskName] . '</h3>
-                  </div>';
+        if (isset($_SESSION['tasks']['taskName'])) {
+            echo '<div class="task-container">';
+            while($task = $stmt->fetch()){
+
+                //opening task div and adding task data
+                echo '<div class="task">' . $task['taskName'] . '<hr class="my-4">' . $task['taskDesc'];
+
+                //adding task toggle
+                echo '<form class="task-toggle">
+                      <input type="hidden" name="taskID" value="' . $task['taskID'] . '">
+                      <input type="hidden" name="action" value="toggleTask">
+                      <button type="submit" class="task-button" name="submit">
+                      <i class="fa fa-times" aria-hidden="true"></i>
+                      </button>
+                      </form>';
+
+                //closing task div
+                echo '</div>';
+            }
+
+            //closing task container
+            echo '</div>';
         }
-        */
+
+    }
+
+    //Complete task handler
+    if (isset($_POST['action']) && $_POST['action'] == 'toggleTask') {
+
+        //getting taskID
+        $taskID = $_POST['taskID'];
+        var_dump($taskID);
+
+        //getting datetime because NOW() wont work in the insert for some reason
+        $stmt = $pdo->prepare('SELECT NOW();');
+        $stmt->execute();
+        $taskDone = $stmt->fetch();
+
+       // $sql = "UPDATE `tasks` SET taskDone=? WHERE taskID=?";
+       // $stmt= $pdo->prepare($sql);
+       // $stmt->execute([$taskDone, $taskID]);
 
     }
